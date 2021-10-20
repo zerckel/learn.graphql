@@ -1,0 +1,13 @@
+{
+  "name": "learn.graphql",
+  "version": "1.0.0",
+  "description": "First GraphQl ft. Apollo project",
+  "main": "index.js",
+  "repository": "git@github.com:/zerckel/learn.graphql.git",
+  "author": "Antoine Carbonnel <antoinecarbonnel@yahoo.fr>",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^3.4.0",
+    "graphql": "^15.6.1"
+  }
+}

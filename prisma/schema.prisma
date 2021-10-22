@@ -11,17 +11,33 @@ generator client {
 }
 
 model User {
-  id     Int    @id @default(autoincrement())
-  pseudo String
-  post   Post[]
+  id        Int @id @default(autoincrement())
+  firstname String
+  lastname  String
+  password  String
+  email     String
+  comments  Comment[]
+  posts     Post[]
+}
+
+model Comment {
+  id        Int @id @default(autoincrement())
+  content   String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime
+  updatedAt DateTime
+  Post      Post?    @relation(fields: [postId], references: [id])
+  postId    Int?
+  userId    Int
 }
 
 model Post {
-  id      Int    @id @default(autoincrement())
-  user    User   @relation(fields: [userId], references: [id])
-  content String
-  post    Post[] @relation("PostToPost")
-  Post    Post?  @relation("PostToPost", fields: [postId], references: [id])
-  postId  Int?
-  userId  Int
+  id        Int @id @default(autoincrement())
+  title     String
+  content   String
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  comments  Comment[]
+  createdAt DateTime
+  updatedAt DateTime
 }

@@ -1,7 +1,12 @@
 const {ApolloServer, gql} = require('apollo-server');
-const { PrismaCLient } = require('@prisma/client');
 
-const prisma = new PrismaCLient()
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient()
+
+const context = {
+  prisma: prisma,
+}
 
 const typeDefs = gql`
     scalar DateTime
@@ -189,7 +194,7 @@ const resolvers = {
     }
   }
 };
-const server = new ApolloServer({typeDefs, resolvers});
+const server = new ApolloServer({typeDefs, resolvers, context: context})
 
 server.listen().then(({url}) => {
   console.log(`🚀  Server ready at ${url}`);

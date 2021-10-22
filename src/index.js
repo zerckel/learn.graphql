@@ -23,10 +23,6 @@ const typeDefs = gql`
         posts: [Post]
         post(id: Int!): Post
     }
-    
-    type Mutation {
-        
-    }
 `;
 
 const users = [

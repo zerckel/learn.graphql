@@ -13,14 +13,15 @@ generator client {
 model User {
   id     Int    @id @default(autoincrement())
   pseudo String
-  Post   Post[]
+  post   Post[]
 }
 
 model Post {
-  id       Int    @id @default(autoincrement())
-  author   User   @relation(fields: [id], references: [id])
-  content  String
-  comments Post[] @relation("PostToPost")
-  Post     Post?  @relation("PostToPost", fields: [postId], references: [id])
-  postId   Int?
+  id      Int    @id @default(autoincrement())
+  user    User   @relation(fields: [userId], references: [id])
+  content String
+  post    Post[] @relation("PostToPost")
+  Post    Post?  @relation("PostToPost", fields: [postId], references: [id])
+  postId  Int?
+  userId  Int
 }

@@ -1,41 +1,81 @@
-const { ApolloServer, gql } = require('apollo-server');
+const {ApolloServer, gql} = require('apollo-server');
 
 const typeDefs = gql`
-  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
+    # This "Book" type defines the queryable fields for every book in our data source.
+    type User {
+        id: Int
+        pseudo: String
+    }
 
-  # This "Book" type defines the queryable fields for every book in our data source.
-  type Book {
-    title: String
-    author: String
-  }
+    type Post {
+        id: Int
+        author: User
+        content: String
+        comments: [Post]
+    }
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
-  type Query {
-    books: [Book]
-  }
+    # The "Query" type is special: it lists all of the available queries that
+    # clients can execute, along with the return type for each. In this
+    # case, the "books" query returns an array of zero or more Books (defined above).
+    type Query {
+        users: [User]
+        user(id: Int!): User
+        posts: [Post]
+        post(id: Int!): Post
+    }
+    
+    type Mutation {
+        
+    }
 `;
 
-const books = [
+const users = [
   {
-    title: 'The Awakening',
-    author: 'Kate Chopin',
+    id: 1,
+    pseudo: 'zerckel',
   },
   {
-    title: 'City of Glass',
-    author: 'Paul Auster',
+    id: 2,
+    pseudo: 'tiboInShape',
+  },
+];
+
+const posts = [
+  {
+    id: 1,
+    author: users[1],
+    content: 'wsh la street',
+    comments: []
+  },
+  {
+    id: 2,
+    author: users[0],
+    content: 'wsh la street 1',
+    comments: []
+  },
+  {
+    id: 1,
+    author: users[1],
+    content: 'wsh la street 2',
+    comments: []
   },
 ];
 
 const resolvers = {
   Query: {
-    books: () => books,
+    users: () => users,
+    user(parent, args) {
+      return users.find(user => user.id === args.id)
+    },
+    posts: () => posts,
+    post(parent, args) {
+      return posts.find(post => post.id === args.id)
+    }
   },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({typeDefs, resolvers});
 
-server.listen().then(({ url }) => {
+server.listen().then(({url}) => {
   console.log(`🚀  Server ready at ${url}`);
 });
